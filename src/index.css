@@ -1,0 +1,53 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  margin: auto;
+  max-width: 38rem;
+  padding: 2rem;
+  overflow: hidden;
+}
+
+#win-drop{
+  display: block;
+  position: relative;
+  overflow-x:hidden;
+  overflow-y:auto;
+}
+
+.settings{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  margin:0;
+  overflow:hidden;
+  padding: 0;
+  background-color:#00000083;
+  z-index: 10;
+  transition: all 0.8s ease-in-out;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.Text{
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color:#fff;
+  font-size:1rem;
+}
+
+.vid{
+  position:absolute;
+  top:0;
+  left:0;
+  height:100%;
+  background-color: #001638;
+  width:100%;
+}
+
+video {
+  height:100%;
+  width:100%;
+  background-color: #001638;
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Screen Capture</title>
+    <script src="scripts.js"></script>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+  </head>
+  <body>
+    <div class="settings">
+      <h1 class="Text">Settings</h1>
+      <div class="win-list">
+        <p class="Text">Windows</p>
+        <ul id="win-drop" class="dropdown-menu dropdown-menu-macos mx-0 shadow" style="width: 220px;">
+          <!-- <li><a class="dropdown-item active" href="#">Action</a></li>
+          <li><a class="dropdown-item" href="#">Another action</a></li>                                             HTML Template for the dropdown menu
+          <li><a class="dropdown-item" href="#">Something else here</a></li> -->
+        </ul>
+      </div>
+      <a class="btn btn-primary" style="margin: 10px;" onclick="setStream('full','f')">
+        full desktop
+      </a>
+    </div>
+    <div class="vid">
+      <video id="stream" src=""></video>
+    </div>
+  </body>
+</html>
