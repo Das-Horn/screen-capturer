@@ -1,8 +1,8 @@
 {
-  "name": "my-new-app",
-  "productName": "my-new-app",
-  "version": "1.0.0",
-  "description": "My Electron application description",
+  "name": "screen-capture",
+  "productName": "screen Capture",
+  "version": "0.2.5",
+  "description": "Screen capturing application",
   "main": "dist/index.js",
   "scripts": {
     "start": "tsc && electron-forge start",

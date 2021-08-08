@@ -2,6 +2,7 @@
 exports.__esModule = true;
 var electron_1 = require("electron");
 var path = require("path");
+var fs = require("fs");
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
     electron_1.app.quit();
@@ -11,7 +12,10 @@ var createWindow = function () {
     var mainWindow = new electron_1.BrowserWindow({
         height: 600,
         width: 800,
+        minWidth: 500,
+        minHeight: 500,
         autoHideMenuBar: true,
+        darkTheme: true,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
@@ -20,7 +24,26 @@ var createWindow = function () {
     });
     // and load the index.html of the app.
     mainWindow.loadFile(path.join(__dirname, '../src/index.html'));
-    mainWindow.setAlwaysOnTop(true, 'floating');
+    try {
+        console.log("reading file system");
+        fs.readFile('./settings', 'utf-8', function (e, data) {
+            if (e) {
+                fs.writeFile('./settings', '0', function () {
+                    mainWindow.setAlwaysOnTop(true, 'floating');
+                });
+                console.log(e);
+                return;
+            }
+            if (data == "0") {
+                mainWindow.setAlwaysOnTop(true, 'floating');
+            }
+            else {
+                mainWindow.setAlwaysOnTop(false, 'floating');
+            }
+        });
+    }
+    catch (e) {
+    }
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
 };

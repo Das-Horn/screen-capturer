@@ -36,7 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var desktopCapturer = require('electron').desktopCapturer;
+var fs = require("fs");
 var settingsVisible = true;
+var TopAlert = true;
 //classes
 var desktop = /** @class */ (function () {
     function desktop() {
@@ -79,9 +81,48 @@ document.addEventListener("keydown", function (event) {
         windowToggle();
     }
 });
-document.addEventListener("readystatechange", function (event) {
-    desk.updateSources();
-});
+function load() {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            desk.updateSources();
+            window.alert("You can press Tab to toggle the settings panel");
+            setInterval(function () { desk.updateSources(); }, 5000);
+            readTop();
+            return [2 /*return*/];
+        });
+    });
+}
+function readTop() {
+    var check = document.getElementById('Chck');
+    fs.readFile('./settings', 'utf-8', function (e, data) {
+        console.log(data);
+        if (data == "0") {
+            check.checked = true;
+        }
+        else {
+            check.checked = false;
+        }
+    });
+}
+function writeTop() {
+    var check = document.getElementById('Chck');
+    if (check.checked) {
+        fs.writeFile('./settings', "0", function () {
+            if (TopAlert) {
+                window.alert("You have to restart the application for \nthese changes to take effect.");
+                TopAlert = !TopAlert;
+            }
+        });
+    }
+    else {
+        fs.writeFile('./settings', "1", function () {
+            if (TopAlert) {
+                window.alert("You have to restart the application for \nthese changes to take effect.");
+                TopAlert = !TopAlert;
+            }
+        });
+    }
+}
 function setStream(name, id) {
     return __awaiter(this, void 0, void 0, function () {
         var constraints, stream, e_1;

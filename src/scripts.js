@@ -1,8 +1,10 @@
 // variables and imports
 
 const { desktopCapturer } = require('electron');
+const fs = require("fs");
 
 let settingsVisible = true;
+let TopAlert = true;
 //classes
 
 class desktop {  
@@ -33,9 +35,43 @@ document.addEventListener("keydown",event => {
     }
 });
 
-document.addEventListener("readystatechange", event => {
+async function load(){
     desk.updateSources();
-});
+    window.alert(`You can press Tab to toggle the settings panel`);
+    setInterval(() => {desk.updateSources()},5000);
+    readTop();
+}
+
+function readTop(){
+  const check = document.getElementById('Chck');
+  fs.readFile('./settings','utf-8',(e,data) => {
+    console.log(data);
+    if(data == "0"){
+      check.checked = true;
+    } else {
+      check.checked = false;
+    }
+  });
+}
+
+function writeTop(){
+  const check = document.getElementById('Chck');
+  if(check.checked){
+    fs.writeFile('./settings',"0",() => {
+      if(TopAlert){
+        window.alert("You have to restart the application for \nthese changes to take effect.");
+        TopAlert = !TopAlert;
+      }
+    });  
+  } else {
+    fs.writeFile('./settings',"1",() => {
+      if(TopAlert){
+        window.alert("You have to restart the application for \nthese changes to take effect.");
+        TopAlert = !TopAlert;
+      }
+    });  
+  }
+}
 
 async function setStream(name,id){
   try {
