@@ -4,7 +4,6 @@ const { desktopCapturer } = require('electron');
 const fs = require("fs");
 
 let settingsVisible = true;
-let TopAlert = true;
 //classes
 
 class desktop {  
@@ -57,19 +56,9 @@ function readTop(){
 function writeTop(){
   const check = document.getElementById('Chck');
   if(check.checked){
-    fs.writeFile('./settings',"0",() => {
-      if(TopAlert){
-        window.alert("You have to restart the application for \nthese changes to take effect.");
-        TopAlert = !TopAlert;
-      }
-    });  
+    fs.writeFile('./settings',"0",() => {});  
   } else {
-    fs.writeFile('./settings',"1",() => {
-      if(TopAlert){
-        window.alert("You have to restart the application for \nthese changes to take effect.");
-        TopAlert = !TopAlert;
-      }
-    });  
+    fs.writeFile('./settings',"1",() => {});  
   }
 }
 
@@ -80,7 +69,7 @@ async function setStream(name,id){
     console.log(`desktop`);
     constraints = {
       audio: {
-        mandatory: {
+        mandatory: {  
           chromeMediaSource: 'desktop',
         }
       },

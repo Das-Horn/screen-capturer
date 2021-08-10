@@ -15,6 +15,7 @@ const createWindow = (): void => {
     minHeight: 500,
     autoHideMenuBar: true,
     darkTheme: true,
+    icon: '..\\\\Assets\\Vector 2.icns',
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -45,6 +46,10 @@ const createWindow = (): void => {
   }catch(e){
 
   }
+  //Checks top var every second
+  setInterval(() => {
+    checkTop(mainWindow);
+  }, 1000);
 
 
   // Open the DevTools.
@@ -73,3 +78,29 @@ app.on('activate', () => {
   }
 });
 
+
+// Scripts
+
+//Script to check the top variable every second this removes the need to restart the application
+
+async function checkTop(winProcess: BrowserWindow){
+  try{
+    // console.log(`reading file system`);
+    fs.readFile('./settings','utf-8',(e,data) => {
+      if(e){
+        fs.writeFile('./settings','0',() => {
+          winProcess.setAlwaysOnTop(true, 'floating');
+        });
+        console.log(e);
+        return
+      }
+      if(data == "0"){
+        winProcess.setAlwaysOnTop(true, 'floating');
+      } else {
+        winProcess.setAlwaysOnTop(false, 'floating');
+      }
+    });
+  }catch(e){
+    console.log(e);
+  }
+}

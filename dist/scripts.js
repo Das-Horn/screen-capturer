@@ -38,7 +38,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var desktopCapturer = require('electron').desktopCapturer;
 var fs = require("fs");
 var settingsVisible = true;
-var TopAlert = true;
 //classes
 var desktop = /** @class */ (function () {
     function desktop() {
@@ -107,20 +106,10 @@ function readTop() {
 function writeTop() {
     var check = document.getElementById('Chck');
     if (check.checked) {
-        fs.writeFile('./settings', "0", function () {
-            if (TopAlert) {
-                window.alert("You have to restart the application for \nthese changes to take effect.");
-                TopAlert = !TopAlert;
-            }
-        });
+        fs.writeFile('./settings', "0", function () { });
     }
     else {
-        fs.writeFile('./settings', "1", function () {
-            if (TopAlert) {
-                window.alert("You have to restart the application for \nthese changes to take effect.");
-                TopAlert = !TopAlert;
-            }
-        });
+        fs.writeFile('./settings', "1", function () { });
     }
 }
 function setStream(name, id) {
