@@ -1,7 +1,7 @@
 {
   "name": "screen-capture",
   "productName": "screen Capture",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "description": "Screen capturing application",
   "main": "dist/index.js",
   "scripts": {
