@@ -38,6 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var desktopCapturer = require('electron').desktopCapturer;
 var fs = require("fs");
 var settingsVisible = true;
+var currentSource = "";
 //classes
 var desktop = /** @class */ (function () {
     function desktop() {
@@ -49,13 +50,19 @@ var desktop = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, desktopCapturer.getSources({ types: ['window', 'screen'] }).then(function (sources) { return __awaiter(_this, void 0, void 0, function () {
-                            var list, _i, sources_1, source, ele;
+                            var list, ele, _i, sources_1, source;
                             return __generator(this, function (_a) {
                                 list = document.getElementById("win-drop");
                                 list.innerHTML = " ";
+                                ele = "";
                                 for (_i = 0, sources_1 = sources; _i < sources_1.length; _i++) {
                                     source = sources_1[_i];
-                                    ele = "<li><a class=\"dropdown-item\" onclick=\"setStream('" + source.name + "','" + source.id + "')\">" + source.name + "</a></li>";
+                                    if (source.name === currentSource) {
+                                        ele = "<li><a class=\"dropdown-item active\" onclick=\"setStream('" + source.name + "','" + source.id + "')\">" + source.name + "</a></li>";
+                                    }
+                                    else {
+                                        ele = "<li><a class=\"dropdown-item\" onclick=\"setStream('" + source.name + "','" + source.id + "')\">" + source.name + "</a></li>";
+                                    }
                                     list.innerHTML += ele;
                                 }
                                 return [2 /*return*/];
@@ -85,7 +92,7 @@ function load() {
         return __generator(this, function (_a) {
             desk.updateSources();
             window.alert("You can press Tab to toggle the settings panel");
-            setInterval(function () { desk.updateSources(); }, 5000);
+            setInterval(function () { desk.updateSources(); }, 1000);
             readTop();
             return [2 /*return*/];
         });
@@ -114,11 +121,27 @@ function writeTop() {
 }
 function setStream(name, id) {
     return __awaiter(this, void 0, void 0, function () {
-        var constraints, stream, e_1;
+        var listItems, _i, listItems_1, ele, constraints, stream, e_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
+                    listItems = document.getElementById("win-drop").childNodes;
+                    for (_i = 0, listItems_1 = listItems; _i < listItems_1.length; _i++) {
+                        ele = listItems_1[_i];
+                        if (ele.innerHTML === name) {
+                            ele.classList.add("active");
+                        }
+                        else {
+                            try {
+                                ele.classList.remove("active");
+                            }
+                            catch (e) {
+                                console.log(e);
+                            }
+                        }
+                    }
+                    currentSource = name;
                     if (name === "full") {
                         console.log("desktop");
                         constraints = {

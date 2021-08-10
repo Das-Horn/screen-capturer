@@ -4,6 +4,7 @@ const { desktopCapturer } = require('electron');
 const fs = require("fs");
 
 let settingsVisible = true;
+let currentSource = "";
 //classes
 
 class desktop {  
@@ -13,8 +14,13 @@ class desktop {
       let data = await desktopCapturer.getSources({types:['window','screen']}).then(async sources =>{
         const list = document.getElementById("win-drop");
         list.innerHTML = " ";
+        let ele = "";
         for(let source of sources){
-          let ele = `<li><a class="dropdown-item" onclick="setStream('${source.name}','${source.id}')">${source.name}</a></li>`;
+          if(source.name === currentSource){
+            ele = `<li><a class="dropdown-item active" onclick="setStream('${source.name}','${source.id}')">${source.name}</a></li>`;
+          }else{
+            ele = `<li><a class="dropdown-item" onclick="setStream('${source.name}','${source.id}')">${source.name}</a></li>`;
+          }
           list.innerHTML += ele;
         }
       }).catch( err => {
@@ -37,7 +43,7 @@ document.addEventListener("keydown",event => {
 async function load(){
     desk.updateSources();
     window.alert(`You can press Tab to toggle the settings panel`);
-    setInterval(() => {desk.updateSources()},5000);
+    setInterval(() => {desk.updateSources()},1000);
     readTop();
 }
 
@@ -64,6 +70,21 @@ function writeTop(){
 
 async function setStream(name,id){
   try {
+    //updates the ui to tell the user the active stream
+    const listItems = document.getElementById("win-drop").childNodes;
+    for(let ele of listItems){
+      if(ele.innerHTML === name){
+        ele.classList.add("active");
+      }else{
+        try{
+          ele.classList.remove("active");
+        }catch(e){
+          console.log(e);
+        }
+      }
+    }
+    currentSource = name;
+    // sets the stream
     var constraints;
     if(name === "full"){
     console.log(`desktop`);
