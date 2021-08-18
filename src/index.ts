@@ -11,9 +11,10 @@ const createWindow = (): void => {
   const mainWindow = new BrowserWindow({
     height: 600,
     width: 800,
-    minWidth: 500,
-    minHeight: 500,
+    minWidth: 50,
+    minHeight: 50,
     autoHideMenuBar: true,
+    // frame: false,
     darkTheme: true,
     icon: '..\\\\Assets\\Vector 2.icns',
     webPreferences: {
@@ -61,6 +62,8 @@ const createWindow = (): void => {
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
 
+app.allowRendererProcessReuse = false;
+
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
@@ -77,6 +80,7 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
 
 
 // Scripts

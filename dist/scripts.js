@@ -37,8 +37,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var desktopCapturer = require('electron').desktopCapturer;
 var fs = require("fs");
+var portAudio = require('naudiodon');
 var settingsVisible = true;
 var currentSource = "";
+var audioId = '';
 //classes
 var desktop = /** @class */ (function () {
     function desktop() {
@@ -49,7 +51,7 @@ var desktop = /** @class */ (function () {
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, desktopCapturer.getSources({ types: ['window', 'screen'] }).then(function (sources) { return __awaiter(_this, void 0, void 0, function () {
+                    case 0: return [4 /*yield*/, desktopCapturer.getSources({ types: ['window', 'screen', 'audio'] }).then(function (sources) { return __awaiter(_this, void 0, void 0, function () {
                             var list, ele, _i, sources_1, source;
                             return __generator(this, function (_a) {
                                 list = document.getElementById("win-drop");
@@ -81,7 +83,7 @@ var desktop = /** @class */ (function () {
     return desktop;
 }());
 var desk = new desktop();
-//scripts
+//Video streaming and miscelanious code goes here
 document.addEventListener("keydown", function (event) {
     if (event.key == "Tab") {
         windowToggle();
@@ -147,7 +149,8 @@ function setStream(name, id) {
                         constraints = {
                             audio: {
                                 mandatory: {
-                                    chromeMediaSource: 'desktop'
+                                    chromeMediaSource: 'desktop',
+                                    echoCancellation: true
                                 }
                             },
                             video: {
@@ -161,7 +164,13 @@ function setStream(name, id) {
                     else {
                         console.log("single app");
                         constraints = {
-                            audio: false,
+                            audio: {
+                                mandatory: {
+                                    chromeMediaSource: 'desktop',
+                                    chromeMediaSourceId: id,
+                                    echoCancellation: true
+                                }
+                            },
                             video: {
                                 mandatory: {
                                     chromeMediaSource: 'desktop',
@@ -189,6 +198,7 @@ function handleStream(stream) {
     console.log("setting stream:\nname:\nObject:");
     console.log(stream);
     vid.srcObject = stream;
+    vid.volume = 0.5;
     vid.onloadedmetadata = function (e) { return vid.play(); };
 }
 function windowToggle() {
@@ -204,6 +214,21 @@ function windowToggle() {
                 win.style.top = "0";
             }
             settingsVisible = !settingsVisible;
+            return [2 /*return*/];
+        });
+    });
+}
+// Audio based code goes here
+function getAudioSources() {
+    return __awaiter(this, void 0, void 0, function () {
+        var sources, sourceList, _i, sources_2, i;
+        return __generator(this, function (_a) {
+            sources = portAudio.getDevices();
+            for (_i = 0, sources_2 = sources; _i < sources_2.length; _i++) {
+                i = sources_2[_i];
+                sourceList = sourceList + "<li value=\"" + i + "\">" + i.name + "</li>";
+            }
+            window.alert("<div><h1>Please select a audio source</h1><ul>" + sourceList + "</ul></div>");
             return [2 /*return*/];
         });
     });

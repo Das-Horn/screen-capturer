@@ -2,16 +2,18 @@
 
 const { desktopCapturer } = require('electron');
 const fs = require("fs");
+const portAudio = require('naudiodon');
 
 let settingsVisible = true;
 let currentSource = "";
+let audioId = '';
 //classes
 
 class desktop {  
     constructor(){
     }
     async updateSources(){
-      let data = await desktopCapturer.getSources({types:['window','screen']}).then(async sources =>{
+      let data = await desktopCapturer.getSources({types:['window','screen','audio']}).then(async sources =>{
         const list = document.getElementById("win-drop");
         list.innerHTML = " ";
         let ele = "";
@@ -33,7 +35,7 @@ class desktop {
 
 const desk = new desktop();
 
-//scripts
+//Video streaming and miscelanious code goes here
 document.addEventListener("keydown",event => {
     if(event.key == "Tab"){
         windowToggle();
@@ -92,6 +94,7 @@ async function setStream(name,id){
       audio: {
         mandatory: {  
           chromeMediaSource: 'desktop',
+          echoCancellation: true
         }
       },
       video: {
@@ -104,7 +107,13 @@ async function setStream(name,id){
   }else {
     console.log(`single app`);
     constraints = {
-      audio:false,
+      audio: {
+        mandatory: {
+          chromeMediaSource: 'desktop',
+          chromeMediaSourceId: id,
+          echoCancellation: true
+        }
+      },
       video: {
         mandatory: {
           chromeMediaSource: 'desktop',
@@ -126,6 +135,7 @@ function handleStream(stream){
   console.log(`setting stream:\nname:\nObject:`);
   console.log(stream);
   vid.srcObject = stream;
+  vid.volume = 0.5;
   vid.onloadedmetadata = (e) => vid.play()
 }
 
@@ -139,4 +149,15 @@ async function windowToggle(){
     win.style.top = "0";
   }
   settingsVisible = !settingsVisible;
+}
+
+// Audio based code goes here
+
+async function getAudioSources(){
+  let sources = portAudio.getDevices();
+  let sourceList
+  for(let i of sources){
+    sourceList = `${sourceList}<li value="${i}">${i.name}</li>`
+  }
+  // window.alert(`<div><h1>Please select a audio source</h1><ul>${sourceList}</ul></div>`)        this method of creation doesn't work
 }

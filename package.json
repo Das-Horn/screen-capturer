@@ -61,6 +61,7 @@
   },
   "dependencies": {
     "bootstrap": "^5.1.0",
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "naudiodon": "^2.3.5"
   }
 }

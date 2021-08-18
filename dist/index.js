@@ -48,9 +48,10 @@ var createWindow = function () {
     var mainWindow = new electron_1.BrowserWindow({
         height: 600,
         width: 800,
-        minWidth: 500,
-        minHeight: 500,
+        minWidth: 50,
+        minHeight: 50,
         autoHideMenuBar: true,
+        // frame: false,
         darkTheme: true,
         icon: '..\\\\Assets\\Vector 2.icns',
         webPreferences: {
@@ -92,6 +93,7 @@ var createWindow = function () {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 electron_1.app.on('ready', createWindow);
+electron_1.app.allowRendererProcessReuse = false;
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
